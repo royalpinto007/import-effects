@@ -1,0 +1,89 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "import-effects"
+version = "0.0.1"
+description = "See what Python does when you import."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "Royal Pinto", email = "royalpinto007@gmail.com" }]
+keywords = [
+  "python",
+  "imports",
+  "side-effects",
+  "audit-hooks",
+  "testing",
+  "debugging",
+  "observability",
+  "cli",
+  "security",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Software Development :: Debuggers",
+  "Topic :: Software Development :: Testing",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/royalpinto007/import-effects"
+Documentation = "https://github.com/royalpinto007/import-effects#readme"
+Issues = "https://github.com/royalpinto007/import-effects/issues"
+Source = "https://github.com/royalpinto007/import-effects"
+
+[project.scripts]
+import-effects = "import_effects.cli:main"
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.3",
+  "mypy>=1.17",
+  "pytest>=8.4",
+  "pytest-cov>=6.2",
+  "ruff>=0.12",
+  "twine>=6.2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/import_effects"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["import_effects"]
+patch = ["subprocess"]
+parallel = true
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+skip_covered = true
