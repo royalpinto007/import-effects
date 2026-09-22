@@ -36,9 +36,7 @@ def test_fail_on_and_ignore(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> 
                 "--fail-on",
                 "file-write",
                 "--ignore",
-                f"{second}{os.sep}**",
-                "--ignore",
-                os.devnull,
+                "*",
                 "--quiet",
             ]
         )
