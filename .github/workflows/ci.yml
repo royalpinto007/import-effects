@@ -36,7 +36,7 @@ jobs:
           python -m zipfile -l dist/*.whl
           tar -tzf dist/*.tar.gz
       - name: Scan repository history
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
