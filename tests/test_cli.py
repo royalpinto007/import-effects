@@ -22,8 +22,13 @@ def test_json_output(capsys: pytest.CaptureFixture[str]) -> None:
 
 
 def test_fail_on_and_ignore(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setenv("IMPORT_EFFECTS_FIXTURE_DIR", os.fspath(tmp_path))
+    first = tmp_path / "first"
+    first.mkdir()
+    monkeypatch.setenv("IMPORT_EFFECTS_FIXTURE_DIR", os.fspath(first))
     assert main(["effects_package", "--fail-on", "network", "--quiet"]) == 1
+    second = tmp_path / "second"
+    second.mkdir()
+    monkeypatch.setenv("IMPORT_EFFECTS_FIXTURE_DIR", os.fspath(second))
     assert (
         main(
             [
@@ -31,7 +36,7 @@ def test_fail_on_and_ignore(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> 
                 "--fail-on",
                 "file-write",
                 "--ignore",
-                f"{tmp_path}/**",
+                f"{second}{os.sep}**",
                 "--ignore",
                 os.devnull,
                 "--quiet",

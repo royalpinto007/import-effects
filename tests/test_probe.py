@@ -36,7 +36,8 @@ def test_audit_event_mapping(tmp_path: Path) -> None:
         "subprocess",
         "multiprocessing",
     } <= kinds
-    assert all("private" not in effect.detail for effect in observer.effects)
+    assert all("token=private" not in effect.detail for effect in observer.effects)
+    assert any("token=<redacted>" in effect.detail for effect in observer.effects)
     assert any(effect.detail == "git --version" for effect in observer.effects)
 
 

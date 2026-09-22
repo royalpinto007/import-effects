@@ -10,6 +10,7 @@ from pathlib import Path
 root = Path(os.environ["IMPORT_EFFECTS_FIXTURE_DIR"])
 (root / "created").mkdir(exist_ok=True)
 (root / "created" / "effect.txt").write_text("observed", encoding="utf-8")
+(root / "renamed.txt").unlink(missing_ok=True)
 (root / "rename-source.txt").write_text("rename", encoding="utf-8")
 (root / "rename-source.txt").rename(root / "renamed.txt")
 (root / "delete.txt").write_text("delete", encoding="utf-8")

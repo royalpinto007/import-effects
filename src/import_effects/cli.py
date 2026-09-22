@@ -84,9 +84,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 4
     report = _apply_ignores(report, arguments.ignore)
     if arguments.json:
-        print(json.dumps(report.to_dict(), indent=2, sort_keys=True))
+        _print_safe(json.dumps(report.to_dict(), indent=2, sort_keys=True))
     else:
-        print(_format_text(report, quiet=arguments.quiet, verbose=arguments.verbose))
+        _print_safe(_format_text(report, quiet=arguments.quiet, verbose=arguments.verbose))
     if not report.success:
         return 3
     if any(effect.kind in fail_on for effect in report.effects):
@@ -163,6 +163,12 @@ def _summary(report: ImportReport) -> str:
 
 def _indent(value: str) -> str:
     return "\n".join(f"  {line}" for line in value.splitlines())
+
+
+def _print_safe(value: str) -> None:
+    encoding = sys.stdout.encoding or "utf-8"
+    printable = value.encode(encoding, errors="replace").decode(encoding)
+    print(printable)
 
 
 if __name__ == "__main__":  # pragma: no cover
