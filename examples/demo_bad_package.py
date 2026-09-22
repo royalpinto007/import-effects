@@ -3,7 +3,6 @@
 import os
 import socket
 import subprocess
-import sys
 import threading
 from pathlib import Path
 
@@ -21,7 +20,7 @@ finally:
     connection.close()
 
 subprocess.run(
-    [sys.executable, "-c", "pass"],
+    ["git", "--version"],
     check=True,
     stdout=subprocess.DEVNULL,
     stderr=subprocess.DEVNULL,
