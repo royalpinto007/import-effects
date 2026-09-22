@@ -1,0 +1,19 @@
+name: Feature request
+description: Propose a reliable new observation or developer workflow
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Reliable runtime evidence or API
+      description: Explain how the behavior can be observed without overstating attribution.
+    validations:
+      required: true
+

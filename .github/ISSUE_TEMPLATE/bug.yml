@@ -1,0 +1,33 @@
+name: Bug report
+description: Report incorrect or missing import observations
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not paste secrets or reports containing private paths without sanitizing them.
+  - type: input
+    id: version
+    attributes:
+      label: import-effects version
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Python and operating system
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
