@@ -97,12 +97,18 @@ class _Observer:
             if event == "open":
                 self._audit_open(args)
             elif event in {"os.remove", "os.unlink"}:
-                self.add("file-delete", _path(args[0]))
+                path = _path(args[0])
+                if not _is_runtime_path(path):
+                    self.add("file-delete", path)
             elif event in {"os.rename", "os.replace"}:
-                self.add("file-rename", f"{_path(args[0])} -> {_path(args[1])}")
+                source, destination = _path(args[0]), _path(args[1])
+                if not (_is_runtime_path(source) or _is_runtime_path(destination)):
+                    self.add("file-rename", f"{source} -> {destination}")
             elif event in {"os.mkdir", "os.rmdir"}:
-                action = "created" if event == "os.mkdir" else "removed"
-                self.add("directory", f"{action} {_path(args[0])}")
+                path = _path(args[0])
+                if not _is_runtime_path(path):
+                    action = "mkdir" if event == "os.mkdir" else "rmdir"
+                    self.add("directory", f"{action} {path}")
             elif event == "socket.connect":
                 self.add("network", _address(args[-1]), metadata={"operation": "connect"})
             elif event == "socket.bind":
@@ -130,6 +136,8 @@ class _Observer:
 
     def _audit_open(self, args: tuple[Any, ...]) -> None:
         if not args:
+            return
+        if isinstance(args[0], int):
             return
         path = _path(args[0])
         if _is_internal_write(path, self.report_path):
@@ -271,7 +279,11 @@ def _redact(value: str) -> str:
 
 
 def _is_internal_write(path: str, report_path: Path) -> bool:
-    return Path(path) == report_path or path.endswith((".pyc", ".pyc.")) or "__pycache__" in path
+    return Path(path) == report_path or _is_runtime_path(path)
+
+
+def _is_runtime_path(path: str) -> bool:
+    return path.endswith((".pyc", ".pyo")) or "__pycache__" in path
 
 
 def _available_signals() -> list[int]:

@@ -79,6 +79,7 @@ def test_probe_helpers(tmp_path: Path) -> None:
     assert _probe._is_internal_write("thing.pyc", tmp_path / "report.json")
     assert _probe._is_internal_write(os.fspath(tmp_path / "report.json"), tmp_path / "report.json")
     assert not _probe._is_internal_write("normal.txt", tmp_path / "report.json")
+    assert _probe._is_runtime_path("pkg/__pycache__/module.pyc.123")
     assert _probe._handler_name(signal.SIG_DFL) == str(signal.SIG_DFL)
     assert _probe._handler_name(logging.info).endswith("info")
     assert _probe._signal_name(signal.SIGINT) == "SIGINT"
